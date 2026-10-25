@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# 本地设置 / 个人数据（每个人不同，不要提交）
+config.json
+debug.log
+data/user.json
+
+# 词库：体积大且来自 rime-ice（GPL-3.0），用 `python build_dict.py --download` 在本地生成
+data/dict.txt
+data/dict.db
+data/dict.pkl
+data/rime_src/
+
+# 打包产物 / 发行包
+dist/
+build/
+build_tmp/
+release/
+*.spec
+*.zip
+
+# 临时文件
+shot*.png
+*.tmp

@@ -1,0 +1,22 @@
+{
+  "mode": "auto",
+  "scale": 0,
+  "position": "bottom",
+  "opacity": 0.96,
+  "bg_alpha": 0.8,
+  "panel_alpha": 0.0,
+  "x": null,
+  "y": null,
+  "debug": false,
+  "ascii_via_vk": false,
+  "start_hidden": false,
+  "toggle_hotkey": true,
+  "wheel": {
+    "enter": 0.7,
+    "exit": 0.4,
+    "dwell": 0.07,
+    "cooldown": 0.15,
+    "rest": 0.25,
+    "group": 0.65
+  }
+}
