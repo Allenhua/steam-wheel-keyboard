@@ -95,7 +95,18 @@ Switching: `config.json` → `"mode"`, CLI `--steam` / `--direct`, or **hold Sta
 
 While Big Picture is in the foreground, Steam routes the controller **only to the foreground app** (Big Picture itself), so the keyboard receives nothing. With `focus_mode: auto` (default) the keyboard takes focus while it is shown over Big Picture, delivers each committed text back to Big Picture, and gives focus back when hidden (`L3+R3`).
 
-Once hidden, the controller belongs to Big Picture again and the keyboard can't hear `L3+R3`. To **show it again**, bind a global Steam chord to the keyboard shortcut: Steam Settings → **Controller** → **Guide Button Chord Layout** → Edit → pick a button (e.g. `Y`, meaning *hold Steam + Y*) → bind keyboard key `Ctrl` and add extra commands `Alt` and `K`. Or set `"hotkey_toggle": "pause"` (any single key) in `config.json` and bind just that key. `focus_mode` can also be `always` or `never`.
+Once hidden, the controller belongs to Big Picture again and the keyboard can't hear `L3+R3`. To **show it again**, make a global Steam chord send `Ctrl+Alt+K`. The neatest option is to repurpose **Steam + X** (by default it opens Steam's own keyboard):
+
+1. Settings → **Controller** → **Show advanced settings** → **Non-game controller layouts → Guide Button Chord Layout** → **Edit** → **Edit layout**;
+2. **Buttons → Face buttons → X**: click the current "Show keyboard" binding → **Keyboard** tab → **Ctrl**;
+3. ⚙ next to it → **Add sub command** → **Alt**; ⚙ → **Edit multi-binding timing** → **+** on the Ctrl/Alt group → **K**;
+4. Change the activation from **Release press** to **Regular press** (release press only emits a ~30 ms pulse that can be missed);
+5. Back out to save. **Hold Steam + X** now shows/hides the wheel keyboard everywhere.
+
+To keep Steam's keyboard, bind a free button instead (e.g. back button **R5**). Or set `"hotkey_toggle"` to a single key (e.g. `"f12"`) and bind just that. `focus_mode` can also be `always` or `never`.
+
+> [!NOTE]
+> In Big Picture, activating a text field with A **auto-opens Steam's own keyboard**; Steam has **no setting to turn that off**. Press **B** to dismiss it, then **Steam + X** for the wheel keyboard — text goes into that field.
 
 ## Controls
 
