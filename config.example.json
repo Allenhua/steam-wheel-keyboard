@@ -1,5 +1,9 @@
 {
   "mode": "auto",
+  "lang": "auto",
+  "focus_mode": "auto",
+  "hotkey_toggle": "ctrl+alt+k",
+  "hotkey_phone": "ctrl+alt+p",
   "scale": 0,
   "position": "bottom",
   "opacity": 0.96,

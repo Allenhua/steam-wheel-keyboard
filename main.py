@@ -12,7 +12,7 @@ import subprocess
 import sys
 import time
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 if getattr(sys, "frozen", False):
     BASE = os.path.dirname(sys.executable)
@@ -35,10 +35,13 @@ DEFAULT_CONFIG = {
     "bg_alpha": 0.80,          # 轮盘/按钮底色不透明度（越小越透明）
     "panel_alpha": 0.0,        # 整个键盘后面的大底板不透明度，0 = 完全没有底板
     "x": None, "y": None,      # 窗口位置；拖动 / 移动模式后会自动记住
+    "focus_mode": "auto",      # auto: 下层是 Steam 大屏幕模式时键盘自己拿焦点 | always | never
     "debug": False,            # True: 把手柄原始数据写进 debug.log
     "ascii_via_vk": False,     # True: 英文字符用真实按键发送（部分游戏需要）
     "start_hidden": False,
-    "toggle_hotkey": True,     # Ctrl+Alt+K 显示/隐藏
+    "toggle_hotkey": True,     # 是否启用下面两个键盘快捷键
+    "hotkey_toggle": "ctrl+alt+k",   # 收起/呼出键盘；也可写单个键，如 "pause"、"f13"、"scrolllock"
+    "hotkey_phone": "ctrl+alt+p",    # 手机扫码面板
     # 摇杆防误触（数值越大越"迟钝"、越不容易误输入）。字段含义见 README
     "wheel": {"enter": 0.70, "exit": 0.40, "dwell": 0.07, "cooldown": 0.15,
               "rest": 0.25, "group": 0.65},
@@ -274,6 +277,38 @@ class DebugLog:
             self.stats = {}
 
 
+class FocusBridge:
+    """包住真正的 Sender。键盘自己握着焦点时（Steam 大屏幕模式），每次输出前把焦点瞬间还给目标窗口，
+    发完再拿回来；没握焦点时直接发送，和以前完全一样。"""
+
+    def __init__(self, sender, get_hwnd):
+        import winutil
+        self.w = winutil
+        self.s = sender
+        self.get_hwnd = get_hwnd
+        self.active = False
+        self.target = None
+
+    def _deliver(self, fn, *a):
+        if not self.active or not self.target or not self.w.user32.IsWindow(self.target):
+            return fn(*a)
+        me = self.get_hwnd()
+        self.w.force_foreground(self.target)
+        time.sleep(0.03)
+        fn(*a)
+        time.sleep(0.06)
+        self.w.force_foreground(me)
+
+    def text(self, s):
+        self._deliver(self.s.text, s)
+
+    def key(self, vk):
+        self._deliver(self.s.key, vk)
+
+    def combo(self, vks):
+        self._deliver(self.s.combo, vks)
+
+
 def make_demo(kb, demo):
     if demo == "pinyin":
         kb.mode, kb.group = 0, 3
@@ -399,7 +434,10 @@ def run():
 
     threading.Thread(target=bg_load, daemon=True).start()
 
-    kb = Keyboard(Sender(bool(cfg["ascii_via_vk"])), engine, cfg.get("wheel"))
+    bridge = FocusBridge(Sender(bool(cfg["ascii_via_vk"])), lambda: hwnd)
+    kb = Keyboard(bridge, engine, cfg.get("wheel"))
+    focus_mode = str(cfg.get("focus_mode", "auto")).lower()      # auto | always | never
+    last_focus_check = 0.0
     pads = Pads()
     steam_up = winutil.process_running("steam.exe")
     kb.say("词库加载中…", time.time(), 60)
@@ -412,6 +450,8 @@ def run():
     chord_used = {c[2]: False for c in CHORDS}
     dbg = DebugLog(os.path.join(BASE, "debug.log")) if cfg.get("debug") else None
     hk_prev = False
+    hk_toggle = winutil.parse_hotkey(cfg.get("hotkey_toggle", "ctrl+alt+k")) or winutil.parse_hotkey("ctrl+alt+k")
+    hk_phone = winutil.parse_hotkey(cfg.get("hotkey_phone", "ctrl+alt+p")) or winutil.parse_hotkey("ctrl+alt+p")
     last_draw, last_status, status = 0.0, "", ""
     last_t = time.time()
     last_active = last_t
@@ -457,12 +497,41 @@ def run():
         save_config(cfg)
         kb.dirty = True
 
+    def need_focus(fg):
+        if focus_mode == "never" or not fg or fg == hwnd:
+            return False
+        return focus_mode == "always" or winutil.is_big_picture(fg)
+
+    def grab_focus(target):
+        """Steam 只把手柄交给"前台"的程序：大屏幕模式在前台时，键盘必须自己拿到焦点才收得到手柄。"""
+        bridge.target, bridge.active = target, True
+        winutil.set_noactivate(hwnd, False)
+        winutil.force_foreground(hwnd)
+        if dbg:
+            dbg.f.write(f"# FOCUS grab target={target} ok={winutil.foreground() == hwnd}" + chr(10))
+
+    def release_focus():
+        if not bridge.active:
+            return
+        bridge.active = False
+        winutil.set_noactivate(hwnd, True)
+        if bridge.target and winutil.user32.IsWindow(bridge.target):
+            winutil.force_foreground(bridge.target)
+        if dbg:
+            dbg.f.write("# FOCUS release" + chr(10))
+
     def set_visible(flag):
         nonlocal visible
         visible = flag
         if not flag and moving:
             set_moving(False)
+        if not flag:
+            release_focus()
         winutil.show(hwnd, flag)
+        if flag:
+            fg = winutil.foreground()
+            if need_focus(fg):
+                grab_focus(fg)
         kb.dirty = True
 
     # ---- 手机扫码远程输入 ----
@@ -626,7 +695,7 @@ def run():
 
             toggle = "back" in pressed or "hide" in actions
             if cfg["toggle_hotkey"]:
-                hk = winutil.key_down(0x11) and winutil.key_down(0x12) and winutil.key_down(0x4B)
+                hk = winutil.combo_down(hk_toggle)
                 toggle = toggle or (hk and not hk_prev)
                 hk_prev = hk
             if toggle:
@@ -634,7 +703,7 @@ def run():
             if "move" in actions and visible and not overlay:
                 set_moving(not moving)
             if cfg["toggle_hotkey"]:
-                pk = winutil.key_down(0x11) and winutil.key_down(0x12) and winutil.key_down(0x50)   # Ctrl+Alt+P
+                pk = winutil.combo_down(hk_phone)
                 if pk and not pk_prev:
                     toggle_phone()
                 pk_prev = pk
@@ -713,6 +782,19 @@ def run():
                 kb.update_axes(axes[0], axes[1], axes[2], axes[3], axes[4], axes[5], now)
                 kb.tick(now)
 
+            # 大屏幕模式：键盘显示期间保持焦点；被抢走（比如大屏幕自己跳回前台）就拿回来
+            if visible and now - last_focus_check > 0.4:
+                last_focus_check = now
+                fg = winutil.foreground()
+                if fg != hwnd:
+                    if bridge.active and (fg == bridge.target or winutil.is_big_picture(fg)):
+                        grab_focus(fg)
+                    elif not bridge.active and need_focus(fg):
+                        grab_focus(fg)
+                    elif bridge.active and fg:
+                        bridge.active = False            # 用户切到了别的程序：不再抢焦点
+                        winutil.set_noactivate(hwnd, True)
+
             if visible:
                 if pressed:
                     last_btn = (sorted(pressed)[0].upper(), now)
@@ -741,6 +823,10 @@ def run():
     except SystemExit:
         pass
     finally:
+        try:
+            release_focus()
+        except Exception:
+            pass
         if phone:
             phone.stop()
         engine.save()

@@ -164,6 +164,106 @@ def show(hwnd, visible):
         user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE)
 
 
+# ---------------- 焦点（Steam 大屏幕模式需要） ----------------
+user32.GetForegroundWindow.restype = wt.HWND
+user32.GetWindowThreadProcessId.argtypes = [wt.HWND, ctypes.POINTER(wt.DWORD)]
+user32.GetWindowThreadProcessId.restype = wt.DWORD
+user32.AttachThreadInput.argtypes = [wt.DWORD, wt.DWORD, wt.BOOL]
+user32.SetForegroundWindow.argtypes = [wt.HWND]
+user32.BringWindowToTop.argtypes = [wt.HWND]
+user32.SetFocus.argtypes = [wt.HWND]
+user32.IsWindow.argtypes = [wt.HWND]
+user32.GetClassNameW.argtypes = [wt.HWND, wt.LPWSTR, ctypes.c_int]
+_k32 = ctypes.windll.kernel32
+_k32.OpenProcess.restype = wt.HANDLE
+_k32.QueryFullProcessImageNameW.argtypes = [wt.HANDLE, wt.DWORD, wt.LPWSTR, ctypes.POINTER(wt.DWORD)]
+
+
+def foreground():
+    return user32.GetForegroundWindow()
+
+
+def window_process(hwnd):
+    pid = wt.DWORD()
+    user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+    h = _k32.OpenProcess(0x1000, False, pid.value)
+    name = ""
+    if h:
+        buf = ctypes.create_unicode_buffer(300)
+        n = wt.DWORD(300)
+        if _k32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(n)):
+            name = buf.value.rsplit("\\", 1)[-1].lower()
+        _k32.CloseHandle(h)
+    return name
+
+
+def is_big_picture(hwnd):
+    """前台是否是 Steam 大屏幕模式：steamwebhelper 的 SDL 窗口，且基本铺满屏幕。"""
+    if not hwnd or not user32.IsWindow(hwnd):
+        return False
+    cls = ctypes.create_unicode_buffer(64)
+    user32.GetClassNameW(hwnd, cls, 64)
+    if cls.value != "SDL_app" or window_process(hwnd) != "steamwebhelper.exe":
+        return False
+    r = wt.RECT()
+    user32.GetWindowRect(hwnd, ctypes.byref(r))
+    sw, sh = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+    return (r.right - r.left) >= sw * 0.9 and (r.bottom - r.top) >= sh * 0.9
+
+
+def set_noactivate(hwnd, flag):
+    ex = user32.GetWindowLongPtrW(hwnd, GWL_EXSTYLE)
+    ex = (ex | WS_EX_NOACTIVATE) if flag else (ex & ~WS_EX_NOACTIVATE)
+    user32.SetWindowLongPtrW(hwnd, GWL_EXSTYLE, ex)
+
+
+def force_foreground(hwnd):
+    """把 hwnd 设为前台窗口。临时挂接到当前前台线程的输入队列，绕过 Windows 的前台锁。"""
+    if not hwnd or not user32.IsWindow(hwnd):
+        return False
+    fg = user32.GetForegroundWindow()
+    if fg == hwnd:
+        return True
+    me = _k32.GetCurrentThreadId()
+    other = user32.GetWindowThreadProcessId(fg, None) if fg else 0
+    attached = bool(other and other != me and user32.AttachThreadInput(me, other, True))
+    try:
+        user32.BringWindowToTop(hwnd)
+        ok = bool(user32.SetForegroundWindow(hwnd))
+        user32.SetFocus(hwnd)
+    finally:
+        if attached:
+            user32.AttachThreadInput(me, other, False)
+    return ok or user32.GetForegroundWindow() == hwnd
+
+
+_VK_NAMES = {"ctrl": 0x11, "control": 0x11, "alt": 0x12, "shift": 0x10, "win": 0x5B,
+              "pause": 0x13, "break": 0x13, "scrolllock": 0x91, "scroll": 0x91, "insert": 0x2D, "ins": 0x2D,
+              "home": 0x24, "end": 0x23, "pageup": 0x21, "pagedown": 0x22, "space": 0x20, "tab": 0x09,
+              "esc": 0x1B, "apps": 0x5D, "menu": 0x5D}
+
+
+def parse_hotkey(text):
+    """"ctrl+alt+k" / "pause" / "f13" -> 虚拟键码元组；无法识别返回 None。"""
+    vks = []
+    for part in str(text or "").lower().replace(" ", "").split("+"):
+        if not part:
+            continue
+        if part in _VK_NAMES:
+            vks.append(_VK_NAMES[part])
+        elif len(part) == 1 and part.isalnum():
+            vks.append(ord(part.upper()))
+        elif part[0] == "f" and part[1:].isdigit() and 1 <= int(part[1:]) <= 24:
+            vks.append(0x70 + int(part[1:]) - 1)
+        else:
+            return None
+    return tuple(vks) or None
+
+
+def combo_down(vks):
+    return bool(vks) and all(key_down(v) for v in vks)
+
+
 def key_down(vk):
     return bool(user32.GetAsyncKeyState(vk) & 0x8000)
 

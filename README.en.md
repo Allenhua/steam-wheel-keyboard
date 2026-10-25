@@ -91,6 +91,12 @@ Switching: `config.json` → `"mode"`, CLI `--steam` / `--direct`, or **hold Sta
 
 ---
 
+### Steam Big Picture mode
+
+While Big Picture is in the foreground, Steam routes the controller **only to the foreground app** (Big Picture itself), so the keyboard receives nothing. With `focus_mode: auto` (default) the keyboard takes focus while it is shown over Big Picture, delivers each committed text back to Big Picture, and gives focus back when hidden (`L3+R3`).
+
+Once hidden, the controller belongs to Big Picture again and the keyboard can't hear `L3+R3`. To **show it again**, bind a global Steam chord to the keyboard shortcut: Steam Settings → **Controller** → **Guide Button Chord Layout** → Edit → pick a button (e.g. `Y`, meaning *hold Steam + Y*) → bind keyboard key `Ctrl` and add extra commands `Alt` and `K`. Or set `"hotkey_toggle": "pause"` (any single key) in `config.json` and bind just that key. `focus_mode` can also be `always` or `never`.
+
 ## Controls
 
 | Input | Action |
@@ -124,7 +130,7 @@ Security: a fresh random token is generated each time and embedded in the QR URL
 If it can't connect: press `X` to try another address (multi-NIC PCs), allow the app in Windows Firewall (tick both Private and Public), and avoid routers with AP isolation.
 
 ## Config
-`config.json` is created on first run (see [`config.example.json`](config.example.json)): `mode`, `scale`, `position`, `x`/`y`, `opacity`, `bg_alpha`, `panel_alpha`, `ascii_via_vk`, `start_hidden`, `toggle_hotkey`, `debug`, and `wheel.{enter, exit, dwell, cooldown, rest, group}` for anti-misfire tuning (raise `enter`/`dwell` if you get stray characters). Details in the Chinese README.
+`config.json` is created on first run (see [`config.example.json`](config.example.json)): `mode`, `lang` (auto/zh/en), `focus_mode` (auto/always/never), `hotkey_toggle`, `hotkey_phone`, `scale`, `position`, `x`/`y`, `opacity`, `bg_alpha`, `panel_alpha`, `ascii_via_vk`, `start_hidden`, `toggle_hotkey`, `debug`, and `wheel.{enter, exit, dwell, cooldown, rest, group}` for anti-misfire tuning (raise `enter`/`dwell` if you get stray characters). Details in the Chinese README.
 
 ## Performance
 ~58 MB RAM and ≈0.3 % of one core when idle (≈5 % of one core while redrawing continuously); hidden ≈0.3 %. Priority is lowered to *Below Normal*. For **fullscreen games**, hide the keyboard (`L3+R3`) when not typing — a visible topmost window can disable Windows' fullscreen optimizations for some games. Borderless-window mode is unaffected.

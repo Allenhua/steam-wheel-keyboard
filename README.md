@@ -136,6 +136,25 @@ python main.py            # 自动选模式
 - 新款 **Steam Controller（2026）** 在没有 Steam 时只是一个普通的鼠标 + 键盘设备，本项目使用的 SDL2 目前**读不到它的摇杆**（作者实测），请用 Steam 模式。
 - 直连模式的 Xbox / PS 手柄支持是**按 XInput / SDL 标准接口实现**的，作者没有这些手柄的实机，欢迎反馈。
 
+### Steam 大屏幕模式（Big Picture）
+
+**问题**：大屏幕模式在前台时，Steam 把手柄**只交给前台的程序**（也就是大屏幕界面本身），键盘收不到任何手柄信号。
+
+**本程序的处理**（`focus_mode: auto`，默认开启）：
+- 键盘**显示**时，若下层是大屏幕模式，键盘会自动拿到焦点，Steam 随即把手柄交给键盘；
+- 打出的字会在上屏瞬间投递回大屏幕（搜索框、聊天框等），然后焦点回到键盘；
+- 键盘**收起**（`L3+R3`）时，焦点还给大屏幕，手柄重新操作大屏幕界面。
+
+**一次性设置：让手柄能"呼出"键盘**
+收起之后手柄归大屏幕所有，键盘听不到 `L3+R3`，所以呼出要借 Steam 的**全局组合键**发一个键盘快捷键：
+
+1. Steam 设置 → **控制器** → **Steam 键组合键布局**（英文 *Guide Button Chord Layout*）→ 编辑（各版本名称可能略有不同）；
+2. 选一个按键（例如 `Y`，表示"按住 Steam 键 + Y"），绑定为**键盘按键 `Ctrl`**，再用"添加额外命令"加上 **`Alt`** 和 **`K`**，三个同时触发；
+3. 以后在任何地方（大屏幕、游戏、桌面）按住 **Steam 键 + Y** 就能呼出 / 收起键盘。
+
+> 嫌三个键麻烦：在 `config.json` 里把 `"hotkey_toggle"` 改成单个键（如 `"pause"` 或 `"f13"`），Steam 里只绑这一个键即可。
+> 不在大屏幕里时，键盘照旧不抢焦点；也可以把 `focus_mode` 设为 `always`（总是拿焦点，适合无边框游戏）或 `never`。
+
 ### 切换模式
 
 | 方法 | 说明 |
@@ -233,7 +252,11 @@ python main.py            # 自动选模式
 | `panel_alpha` | `0.0` | 整块底板不透明度，`0` = 没有底板 |
 | `ascii_via_vk` | `false` | `true`：英文字符用真实按键码发送（个别游戏只认按键时开） |
 | `start_hidden` | `false` | 启动时先收起 |
-| `toggle_hotkey` | `true` | 启用 `Ctrl+Alt+K` / `Ctrl+Alt+P` |
+| `toggle_hotkey` | `true` | 启用下面两个键盘快捷键 |
+| `hotkey_toggle` | `ctrl+alt+k` | 收起/呼出键盘；可写单个键如 `pause`、`f13` |
+| `hotkey_phone` | `ctrl+alt+p` | 手机扫码面板 |
+| `focus_mode` | `auto` | `auto`：下层是 Steam 大屏幕时键盘拿焦点 / `always` / `never` |
+| `lang` | `auto` | 界面语言：`auto`（跟随系统）/ `zh` / `en` |
 | `debug` | `false` | `true`：把手柄原始数据写入 `debug.log` |
 | `wheel.*` | 见下 | 摇杆防误触参数 |
 
