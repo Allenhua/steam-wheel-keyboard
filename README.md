@@ -1,10 +1,18 @@
-# 轮盘键盘 · Steam Wheel Keyboard
+<div align="center">
+
+<a href="README.md"><img src="https://img.shields.io/badge/简体中文-当前-7c5cff?style=for-the-badge" alt="简体中文"></a>&nbsp;<a href="README.en.md"><img src="https://img.shields.io/badge/English-switch-1b2338?style=for-the-badge" alt="English"></a>
+
+<img src="docs/banner-zh.svg" alt="Steam Wheel Keyboard" width="100%">
+
+<img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0a84ff?style=flat-square&logo=windows"> <img src="https://img.shields.io/badge/Python-3.10%2B-3776ab?style=flat-square&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/Steam%20Input-ready-1b2838?style=flat-square&logo=steam"> <img src="https://img.shields.io/github/v/release/Allenhua/steam-wheel-keyboard?style=flat-square&color=6ee7ff"> <img src="https://img.shields.io/github/license/Allenhua/steam-wheel-keyboard?style=flat-square&color=a78bfa">
+
+</div>
+
 
 **给 Steam Controller（以及 Xbox 等标准手柄）用的双轮盘屏幕键盘。** 左摇杆选组、右摇杆选字、松开就输入——支持**中文拼音**、英文、符号、数字、功能键/快捷键，窗口**透明置顶、不抢焦点**，还能**手机扫码，用手机输入法给电脑打字**。
 
-[English](README.en.md) · Windows 10/11 · Python 3.10+ · [GPL-3.0](LICENSE)
 
-![拼音输入](docs/screenshots/pinyin.png)
+![拼音输入](docs/screenshots/zh/pinyin.png)
 
 > 用手柄控制电脑（客厅 / 沙发 / 大屏）时，没法敲键盘，Steam 自带的屏幕键盘又不好用、不能打拼音。这个项目就是为此做的。
 
@@ -43,15 +51,15 @@
 
 | 英文 + Shift | 符号 |
 |---|---|
-| ![英文](docs/screenshots/english.png) | ![符号](docs/screenshots/symbols.png) |
+| ![英文](docs/screenshots/zh/english.png) | ![符号](docs/screenshots/zh/symbols.png) |
 
 | 功能键 / 快捷键 | 候选轮盘（按住 RT） |
 |---|---|
-| ![功能](docs/screenshots/function.png) | ![候选轮盘](docs/screenshots/candidate-wheel.png) |
+| ![功能](docs/screenshots/zh/function.png) | ![候选轮盘](docs/screenshots/zh/candidate-wheel.png) |
 
 | 手机扫码 | 手机上的网页 | 移动窗口（LB+RB） |
 |---|---|---|
-| ![二维码](docs/screenshots/phone-qr.png) | <img src="docs/screenshots/phone-web.jpg" width="260"> | ![移动](docs/screenshots/move-mode.png) |
+| ![二维码](docs/screenshots/zh/phone-qr.png) | <img src="docs/screenshots/zh/phone-web.jpg" width="260"> | ![移动](docs/screenshots/zh/move-mode.png) |
 
 > 截图是离线渲染的示意图（叠在模拟桌面上），界面与实际一致。
 

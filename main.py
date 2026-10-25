@@ -20,12 +20,15 @@ else:
     BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 
+from i18n import T, set_lang  # noqa: E402
+
 CONFIG_PATH = os.path.join(BASE, "config.json")
 DICT_PATH = os.path.join(BASE, "data", "dict.txt")
 USER_PATH = os.path.join(BASE, "data", "user.json")
 
 DEFAULT_CONFIG = {
     "mode": "auto",            # auto | steam | direct
+    "lang": "auto",            # auto（跟随系统）| zh | en —— 界面语言
     "scale": 0,                # 0 = 按屏幕自动；也可填 1.0 / 1.5 / 2.0
     "position": "bottom",      # bottom | top
     "opacity": 0.96,           # 整体不透明度（0.3~1.0，越小越透）
@@ -310,7 +313,7 @@ def screenshot(path, k, demo, cfg):
         url = "http://192.168.1.23:8765/?k=a1B2c3D4"
         ov = {"url": url, "matrix": [list(r) for r in segno.make(url, error="m").matrix],
               "clients": 1, "idx": 0, "n": 3, "error": ""}
-    ui.draw(canvas, kb, "Steam 模式 · Steam Controller · 手机 1 台", time.time(), ov)
+    ui.draw(canvas, kb, T("Steam 模式") + " · Steam Controller · " + T("手机 {n} 台").format(n=1), time.time(), ov)
     bg = pygame.Surface(ui.size)
     for yy in range(0, ui.size[1], 24):
         for xx in range(0, ui.size[0], 24):
@@ -342,6 +345,7 @@ def run():
         print("Steam Wheel Keyboard", VERSION)
         return
     cfg = load_config()
+    set_lang(arg_value("--lang") or cfg.get("lang", "auto"))
     if "--screenshot" in sys.argv:
         screenshot(arg_value("--screenshot"), float(arg_value("--scale") or 1.0),
                    arg_value("--demo") or "pinyin", cfg)
@@ -715,14 +719,14 @@ def run():
                 have_pad = bool(pads.pads) or pads.xinput.count > 0
                 kb.banner = "" if have_pad else \
                     "未检测到手柄 — 请从 Steam 启动本程序（见 README），现在可用触摸板/鼠标点选"
-                label = "Steam 模式" if mode == "steam" else "直连模式"
+                label = T("Steam 模式") if mode == "steam" else T("直连模式")
                 dev = "、".join(pads.names) if pads.names else (
-                    f"XInput 手柄 ×{pads.xinput.count}" if pads.xinput.count else "无手柄")
+                    T("XInput 手柄 ×{n}").format(n=pads.xinput.count) if pads.xinput.count else T("无手柄"))
                 status = f"{label} · {dev}"
                 if phone and phone.running:
-                    status += f" · 手机 {phone.clients()} 台"
+                    status += " · " + T("手机 {n} 台").format(n=phone.clients())
                 if last_btn and now - last_btn[1] < 1.5:
-                    status += f" · 按下 {last_btn[0]}"
+                    status += " · " + T("按下 {b}").format(b=last_btn[0])
                     kb.dirty = True
                 if status != last_status:
                     last_status, kb.dirty = status, True

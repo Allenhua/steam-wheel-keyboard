@@ -7,6 +7,8 @@ import pygame
 from pygame import gfxdraw
 
 from layouts import MODES, label_of
+from i18n import T
+import i18n
 
 BW, BH = 1000, 480
 
@@ -118,6 +120,7 @@ class UI:
         return int(round(v * self.k))
 
     def text(self, surf, txt, size, color, x, y, anchor="center"):
+        txt = T(txt)
         img = self.fonts.render(txt, size * self.k, color)
         r = img.get_rect()
         setattr(r, {"center": "center", "left": "midleft", "right": "midright"}[anchor],
@@ -140,6 +143,16 @@ class UI:
             img = pygame.transform.smoothscale(tmp, (w, h))
             self._shapes[key] = img
         return img
+
+    def fit(self, surf, txt, max_w, size, min_size, color, x, y, anchor="center"):
+        """在 max_w（基准像素）宽度内画字：先缩小字号，还放不下就截断加省略号。"""
+        txt = T(txt)
+        lim = max_w * self.k
+        while size > min_size and self.fonts.render(txt, size * self.k, color).get_width() > lim:
+            size -= 1
+        while len(txt) > 1 and self.fonts.render(txt, size * self.k, color).get_width() > lim:
+            txt = txt[:-2] + "…" if len(txt) > 2 else txt[:1]
+        return self.text(surf, txt, size, color, x, y, anchor)
 
     def rrect(self, surf, rect, color, radius=10):
         w, h = max(2, rect.w), max(2, rect.h)
@@ -240,10 +253,10 @@ class UI:
         if ov.get("error"):
             self.text(surf, ov["error"], 16, C_HOVER, x, 322, "left")
         elif ov["clients"] > 0:
-            self.text(surf, f"● 已连接 {ov['clients']} 台设备，现在可以在手机上打字了", 17, (90, 210, 150), x, 322, "left")
+            self.text(surf, T("● 已连接 {n} 台设备，现在可以在手机上打字了").format(n=ov['clients']), 17, (90, 210, 150), x, 322, "left")
         else:
             self.text(surf, "○ 等待手机连接…", 17, C_MUTED, x, 322, "left")
-        self.text(surf, f"地址 {ov['idx'] + 1}/{ov['n']}：手机打不开就按 X 换一个地址", 14, C_MUTED, x, 350, "left")
+        self.text(surf, T("地址 {i}/{n}：手机打不开就按 X 换一个地址").format(i=ov['idx'] + 1, n=ov['n']), 14, C_MUTED, x, 350, "left")
         self.text(surf, "还是连不上：在 Windows 防火墙弹窗里勾选【专用网络】和【公用网络】并点允许", 13, C_MUTED, x, 374, "left")
         # 按钮
         for i, (name, label) in enumerate((("next", "换地址  X"), ("hide", "隐藏  A / B"), ("stop", "停止手机输入  Y"))):
@@ -265,7 +278,7 @@ class UI:
             r = pygame.Rect(self.s(x), self.s(12), self.s(96), self.s(40))
             self.tab_rects.append(r)
             self.rrect(surf, r, self.col(C_GROUP if i == kb.mode else C_BTN, 255 if i == kb.mode else self.a), 12)
-            self.text(surf, m["name"], 20, C_TEXT if i == kb.mode else C_MUTED, x + 48, 32)
+            self.fit(surf, m["name"], 86, 20, 13, C_TEXT if i == kb.mode else C_MUTED, x + 48, 32)
             x += 102
         self.text(surf, "RB", 13, C_MUTED, x + 4, 32)
         self.text(surf, status, 14, C_MUTED, BW - 24, 26, "right")
@@ -315,7 +328,7 @@ class UI:
             elif kb.banner and not kb.log:
                 self.text(surf, kb.banner, 15, C_HOVER, 40, cy, "left")
             elif kb.log:
-                self.text(surf, "已输入  " + kb.log[-26:], 20, C_TEXT, 40, cy, "left")
+                self.text(surf, T("已输入  ") + kb.log[-26:], 20, C_TEXT, 40, cy, "left")
             else:
                 self.text(surf, self._hint(kb), 18, C_MUTED, 40, cy, "left")
 
@@ -350,12 +363,11 @@ class UI:
                 self.text(surf, a, 19, C_TEXT, x, y - 10)
                 self.text(surf, b, 19, C_TEXT, x, y + 11)
             else:
-                t = title if len(title) <= 5 else title[:5]
-                self.text(surf, t, 17, C_TEXT, x, y)
+                self.fit(surf, title, 82, 17, 12, C_TEXT, x, y)
         self._marker(surf, LCX, kb.lx, kb.ly, kb.tune["group"])
         self.circle(surf, LCX, WCY, R_IN - 3, self.col(C_PANEL, 235))
         self.text(surf, MODES[kb.mode]["short"], 28, C_ACCENT, LCX, WCY - 8)
-        self.text(surf, kb.group_title()[:6], 13, C_MUTED, LCX, WCY + 16)
+        self.fit(surf, kb.group_title(), 92, 13, 10, C_MUTED, LCX, WCY + 16)
         # 右轮：槽
         items = kb.right_items()
         hv = kb.hover if kb.hover >= 0 else kb.mouse_hover
@@ -368,19 +380,18 @@ class UI:
             self.sector(surf, RCX, i, col)
             if it is None:
                 continue
-            lab = label_of(it)
-            lab = lab if len(lab) <= 4 else lab[:3] + "…"
+            lab = T(label_of(it))
             th = i * math.pi / 4
             x, y = polar(RCX, WCY, (R_IN + R_OUT) / 2, th)
             if kb.kind == "abc" and lab.isalpha() and (kb.shift != kb.caps):
                 lab = lab.upper()
-            size = 30 if len(lab) <= 1 else (22 if len(lab) <= 2 else 17)
-            self.text(surf, lab, size, (20, 20, 20) if i == hv else C_TEXT, x, y)
+            size = 30 if len(lab) <= 1 else (22 if len(lab) <= 2 else 18)
+            self.fit(surf, lab, 84, size, 11, (20, 20, 20) if i == hv else C_TEXT, x, y)
         self._marker(surf, RCX, kb.rx, kb.ry, kb.tune["enter"])
         self.circle(surf, RCX, WCY, R_IN - 3, self.col(C_PANEL, 235))
         if hv >= 0 and items[hv] is not None:
-            lab = label_of(items[hv])
-            self.text(surf, lab[:4], 30 if len(lab) <= 2 else 20, C_HOVER, RCX, WCY)
+            lab = T(label_of(items[hv]))
+            self.fit(surf, lab, 96, 30 if len(lab) <= 2 else 20, 11, C_HOVER, RCX, WCY)
         else:
             self.text(surf, "·", 30, C_MUTED, RCX, WCY)
 
@@ -403,8 +414,9 @@ class UI:
             on = (name == "shift" and kb.shift) or (name == "caps" and kb.caps) or \
                  (name == "move" and getattr(kb, "moving", False))
             self.rrect(surf, r, self.col(C_ON, 255) if on else self.col(C_BTN), 10)
-            self.text(surf, label, 16, C_TEXT, BTN_X + 12, (r.centery / self.k), "left")
-            self.text(surf, hint, 12, C_MUTED, BTN_X + BTN_W - 8, (r.centery / self.k), "right")
+            hr = self.text(surf, hint, 12, C_MUTED, BTN_X + BTN_W - 8, (r.centery / self.k), "right")
+            room = (hr.left / self.k) - (BTN_X + 12) - 5
+            self.fit(surf, label, room, 16, 11, C_TEXT, BTN_X + 12, (r.centery / self.k), "left")
 
     def btn_rect(self, n):
         return pygame.Rect(self.s(BTN_X), self.s(BTN_Y0 + n * (BTN_H + BTN_GAP)),

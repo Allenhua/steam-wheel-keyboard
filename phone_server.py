@@ -309,7 +309,17 @@ input[type=checkbox]:checked{background:var(--acc)} input[type=checkbox]:checked
 <script>
 const K=new URLSearchParams(location.search).get('k')||'';
 const $=id=>document.getElementById(id), box=$('box'), st=$('st');
-function setSt(on,n){st.className='st'+(on?' on':'');st.lastChild.textContent=on?('已连接 · '+(n||1)+' 台设备'):'连接断开，重连中…'}
+const EN=!/^zh/i.test(new URLSearchParams(location.search).get('lang')||navigator.language||'zh');
+const D={'轮盘键盘 · 手机输入':'Wheel Keyboard','连接中…':'Connecting…','清空':'Clear','发送并回车':'Send + Enter','发送':'Send',
+'实时输入':'Live typing','开：边打边同步到电脑；关：点"发送"才发':'On: sync as you type · Off: only when you tap Send',
+'常用键（长按可连发）':'Keys (hold to repeat)','退格':'Bksp','回车':'Enter','空格':'Space','编辑':'Edit',
+'全选':'Sel all','复制':'Copy','粘贴':'Paste','剪切':'Cut','撤销':'Undo','重做':'Redo'};
+const L=t=>EN&&D[t]?D[t]:t;
+if(EN){document.documentElement.lang='en';document.title=L(document.title);
+ document.querySelectorAll('h1,button,.sec,.sw div,.st span').forEach(el=>{el.childNodes.forEach(n=>{if(n.nodeType===3){const t=n.textContent.trim();if(D[t])n.textContent=D[t]}})});
+ document.querySelectorAll('.sw small').forEach(el=>el.textContent=L(el.textContent.trim()));
+ box.placeholder='Type here (your phone keyboard, any language, voice input)';}
+function setSt(on,n){st.className='st'+(on?' on':'');st.lastChild.textContent=on?(EN?('Connected · '+(n||1)+' device(s)'):('已连接 · '+(n||1)+' 台设备')):(EN?'Disconnected, retrying…':'连接断开，重连中…')}
 async function api(p,b){try{const r=await fetch(p+'?k='+encodeURIComponent(K),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
  const j=await r.json();setSt(j.ok);return j.ok}catch(e){setSt(false);return false}}
 async function ping(){try{const r=await fetch('/api/ping?k='+encodeURIComponent(K));const j=await r.json();setSt(j.ok,j.clients)}catch(e){setSt(false)}}

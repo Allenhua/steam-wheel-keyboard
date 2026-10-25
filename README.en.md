@@ -1,10 +1,18 @@
-# Steam Wheel Keyboard
+<div align="center">
+
+<a href="README.md"><img src="https://img.shields.io/badge/简体中文-切换-1b2338?style=for-the-badge" alt="简体中文"></a>&nbsp;<a href="README.en.md"><img src="https://img.shields.io/badge/English-current-7c5cff?style=for-the-badge" alt="English"></a>
+
+<img src="docs/banner-en.svg" alt="Steam Wheel Keyboard" width="100%">
+
+<img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0a84ff?style=flat-square&logo=windows"> <img src="https://img.shields.io/badge/Python-3.10%2B-3776ab?style=flat-square&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/Steam%20Input-ready-1b2838?style=flat-square&logo=steam"> <img src="https://img.shields.io/github/v/release/Allenhua/steam-wheel-keyboard?style=flat-square&color=6ee7ff"> <img src="https://img.shields.io/github/license/Allenhua/steam-wheel-keyboard?style=flat-square&color=a78bfa">
+
+</div>
+
 
 **A dual-wheel on-screen keyboard for the Steam Controller (and standard Xbox-style gamepads).** Left stick picks a group, right stick picks a character, release to type. Supports **Chinese Pinyin**, English, symbols, numbers and function keys/shortcuts. The window is **transparent, always-on-top and never steals focus**, and you can **scan a QR code to type on the PC from your phone**.
 
-[中文](README.md) · Windows 10/11 · Python 3.10+ · [GPL-3.0](LICENSE)
 
-![Pinyin input](docs/screenshots/pinyin.png)
+![Pinyin input](docs/screenshots/en/pinyin.png)
 
 > Built for people who drive their PC with a controller (couch / big screen) where a physical keyboard isn't handy, and Steam's own on-screen keyboard has no Pinyin.
 > The UI text is in Chinese; the layout and controls are universal.
@@ -26,15 +34,15 @@
 
 | English + Shift | Symbols |
 |---|---|
-| ![English](docs/screenshots/english.png) | ![Symbols](docs/screenshots/symbols.png) |
+| ![English](docs/screenshots/en/english.png) | ![Symbols](docs/screenshots/en/symbols.png) |
 
 | Function keys | Candidate wheel (hold RT) |
 |---|---|
-| ![Function](docs/screenshots/function.png) | ![Candidate wheel](docs/screenshots/candidate-wheel.png) |
+| ![Function](docs/screenshots/en/function.png) | ![Candidate wheel](docs/screenshots/en/candidate-wheel.png) |
 
 | Phone QR | Phone web page | Move mode (LB+RB) |
 |---|---|---|
-| ![QR](docs/screenshots/phone-qr.png) | <img src="docs/screenshots/phone-web.jpg" width="260"> | ![Move](docs/screenshots/move-mode.png) |
+| ![QR](docs/screenshots/en/phone-qr.png) | <img src="docs/screenshots/en/phone-web.jpg" width="260"> | ![Move](docs/screenshots/en/move-mode.png) |
 
 > Screenshots are offline renders over a mock desktop.
 

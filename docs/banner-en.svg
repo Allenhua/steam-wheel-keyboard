@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070b16"/><stop offset=".55" stop-color="#0d1430"/><stop offset="1" stop-color="#1a0f33"/></linearGradient>
+  <radialGradient id="spot" cx=".78" cy=".5" r=".45"><stop offset="0" stop-color="#6ee7ff" stop-opacity=".18"/><stop offset="1" stop-color="#6ee7ff" stop-opacity="0"/></radialGradient>
+  <linearGradient id="title" x1="0" x2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#b9f3ff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1280" height="420" rx="18" fill="url(#bg)"/>
+<g stroke="#6ee7ff" stroke-opacity=".05" stroke-width="1"><path d="M0 0V420" /><path d="M40 0V420" /><path d="M80 0V420" /><path d="M120 0V420" /><path d="M160 0V420" /><path d="M200 0V420" /><path d="M240 0V420" /><path d="M280 0V420" /><path d="M320 0V420" /><path d="M360 0V420" /><path d="M400 0V420" /><path d="M440 0V420" /><path d="M480 0V420" /><path d="M520 0V420" /><path d="M560 0V420" /><path d="M600 0V420" /><path d="M640 0V420" /><path d="M680 0V420" /><path d="M720 0V420" /><path d="M760 0V420" /><path d="M800 0V420" /><path d="M840 0V420" /><path d="M880 0V420" /><path d="M920 0V420" /><path d="M960 0V420" /><path d="M1000 0V420" /><path d="M1040 0V420" /><path d="M1080 0V420" /><path d="M1120 0V420" /><path d="M1160 0V420" /><path d="M1200 0V420" /><path d="M1240 0V420" /><path d="M1280 0V420" /><path d="M0 0H1280" /><path d="M0 40H1280" /><path d="M0 80H1280" /><path d="M0 120H1280" /><path d="M0 160H1280" /><path d="M0 200H1280" /><path d="M0 240H1280" /><path d="M0 280H1280" /><path d="M0 320H1280" /><path d="M0 360H1280" /><path d="M0 400H1280" /></g>
+<rect width="1280" height="420" rx="18" fill="url(#spot)"/>
+<g font-family="'Cascadia Code','JetBrains Mono',Consolas,'SF Mono',monospace" font-size="13" fill="#6ee7ff" fill-opacity=".55">
+  <text x="70" y="70">&gt; steam-wheel-keyboard --mode auto</text>
+  <text x="70" y="92" fill-opacity=".35">[ok] gamepad: Steam Controller · dict: 884,175 entries · cpu 0.3%</text>
+</g>
+<text x="68" y="168" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="58" font-weight="800" letter-spacing="1" fill="url(#title)">STEAM WHEEL KEYBOARD</text>
+<text x="70" y="222" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="26" font-weight="500" fill="#dbe4ff">A dual-wheel on-screen keyboard built for gamepads</text>
+<text x="70" y="254" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="15" fill="#8b95b8">Left stick picks a group · right stick picks a key · release to type</text>
+<rect x="70" y="276" rx="14" width="142" height="30" fill="#6ee7ff" fill-opacity=".08" stroke="#6ee7ff" stroke-opacity=".45"/><text x="141" y="296" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="14.5" fill="#b9f3ff">Chinese Pinyin</text><rect x="224.39999999999998" y="276" rx="14" width="246" height="30" fill="#6ee7ff" fill-opacity=".08" stroke="#6ee7ff" stroke-opacity=".45"/><text x="347" y="296" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="14.5" fill="#b9f3ff">English / Symbols / F-keys</text><rect x="482.0" y="276" rx="14" width="151" height="30" fill="#6ee7ff" fill-opacity=".08" stroke="#6ee7ff" stroke-opacity=".45"/><text x="558" y="296" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="14.5" fill="#b9f3ff">Phone QR typing</text><rect x="645.0" y="276" rx="14" width="263" height="30" fill="#6ee7ff" fill-opacity=".08" stroke="#6ee7ff" stroke-opacity=".45"/><text x="776" y="296" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="14.5" fill="#b9f3ff">Transparent · No focus steal</text>
+<g font-family="'Cascadia Code','JetBrains Mono',Consolas,'SF Mono',monospace" font-size="12" fill="#8b95b8">
+  <text x="70" y="370">WIN 10/11  ·  STEAM INPUT  ·  XINPUT / SDL2  ·  GPL-3.0</text>
+</g>
+<circle cx="930" cy="210" r="118" fill="none" stroke="#7c5cff" stroke-opacity=".25" stroke-width="1"/>
+<circle cx="930" cy="210" r="126" fill="none" stroke="#7c5cff" stroke-opacity=".12" stroke-width="1" stroke-dasharray="2 6"/>
+<path d="M892.4,104.5 A112,112 0 0 1 967.6,104.5 L944.8,168.6 A44,44 0 0 0 915.2,168.6 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="930.0" y="138.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">ab</text>
+<path d="M978.0,108.8 A112,112 0 0 1 1031.2,162.0 L969.8,191.2 A44,44 0 0 0 948.8,170.2 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="985.2" y="160.8" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">ef</text>
+<path d="M1035.5,172.4 A112,112 0 0 1 1035.5,247.6 L971.4,224.8 A44,44 0 0 0 971.4,195.2 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1008.0" y="216.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">ij</text>
+<path d="M1031.2,258.0 A112,112 0 0 1 978.0,311.2 L948.8,249.8 A44,44 0 0 0 969.8,228.8 Z" fill="#7c5cff" fill-opacity="0.9" stroke="#7c5cff" stroke-opacity="0.9" stroke-width="1.2" filter="url(#glow)"/>
+<text x="985.2" y="271.2" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#0b1020">mn</text>
+<path d="M967.6,315.5 A112,112 0 0 1 892.4,315.5 L915.2,251.4 A44,44 0 0 0 944.8,251.4 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="930.0" y="294.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">qr</text>
+<path d="M882.0,311.2 A112,112 0 0 1 828.8,258.0 L890.2,228.8 A44,44 0 0 0 911.2,249.8 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="874.8" y="271.2" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">uv</text>
+<path d="M824.5,247.6 A112,112 0 0 1 824.5,172.4 L888.6,195.2 A44,44 0 0 0 888.6,224.8 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="852.0" y="216.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">yz</text>
+<path d="M828.8,162.0 A112,112 0 0 1 882.0,108.8 L911.2,170.2 A44,44 0 0 0 890.2,191.2 Z" fill="#1b2338" fill-opacity="0.85" stroke="#7c5cff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="874.8" y="160.8" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">'?</text>
+<circle cx="930" cy="210" r="38" fill="#0d1324" stroke="#7c5cff" stroke-opacity=".6"/>
+<circle cx="1150" cy="210" r="118" fill="none" stroke="#6ee7ff" stroke-opacity=".25" stroke-width="1"/>
+<circle cx="1150" cy="210" r="126" fill="none" stroke="#6ee7ff" stroke-opacity=".12" stroke-width="1" stroke-dasharray="2 6"/>
+<path d="M1112.4,104.5 A112,112 0 0 1 1187.6,104.5 L1164.8,168.6 A44,44 0 0 0 1135.2,168.6 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1150.0" y="138.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">m</text>
+<path d="M1198.0,108.8 A112,112 0 0 1 1251.2,162.0 L1189.8,191.2 A44,44 0 0 0 1168.8,170.2 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1205.2" y="160.8" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4"></text>
+<path d="M1255.5,172.4 A112,112 0 0 1 1255.5,247.6 L1191.4,224.8 A44,44 0 0 0 1191.4,195.2 Z" fill="#6ee7ff" fill-opacity="0.9" stroke="#6ee7ff" stroke-opacity="0.9" stroke-width="1.2" filter="url(#glow)"/>
+<text x="1228.0" y="216.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#0b1020">n</text>
+<path d="M1251.2,258.0 A112,112 0 0 1 1198.0,311.2 L1168.8,249.8 A44,44 0 0 0 1189.8,228.8 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1205.2" y="271.2" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4"></text>
+<path d="M1187.6,315.5 A112,112 0 0 1 1112.4,315.5 L1135.2,251.4 A44,44 0 0 0 1164.8,251.4 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1150.0" y="294.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">o</text>
+<path d="M1102.0,311.2 A112,112 0 0 1 1048.8,258.0 L1110.2,228.8 A44,44 0 0 0 1131.2,249.8 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1094.8" y="271.2" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4"></text>
+<path d="M1044.5,247.6 A112,112 0 0 1 1044.5,172.4 L1108.6,195.2 A44,44 0 0 0 1108.6,224.8 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1072.0" y="216.0" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4">p</text>
+<path d="M1048.8,162.0 A112,112 0 0 1 1102.0,108.8 L1131.2,170.2 A44,44 0 0 0 1110.2,191.2 Z" fill="#1b2338" fill-opacity="0.85" stroke="#6ee7ff" stroke-opacity="0.35" stroke-width="1.2"/>
+<text x="1094.8" y="160.8" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="17" font-weight="600" fill="#cdd6f4"></text>
+<circle cx="1150" cy="210" r="38" fill="#0d1324" stroke="#6ee7ff" stroke-opacity=".6"/>
+<text x="930" y="216" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="18" font-weight="700" fill="#a78bfa">L</text>
+<text x="1150" y="216" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Noto Sans CJK SC',Helvetica,Arial,sans-serif" font-size="18" font-weight="700" fill="#6ee7ff">R</text>
+<text x="1040" y="380" text-anchor="middle" font-family="'Cascadia Code','JetBrains Mono',Consolas,'SF Mono',monospace" font-size="12" fill="#8b95b8">LEFT STICK · GROUP        RIGHT STICK · KEY</text>
+</svg>
